@@ -45,6 +45,7 @@ spec:
     - name: GOALS
       value: 
         - package
+        - -Dquarkus.package.type=native-sources
     workspaces:
     - name: source
       workspace: shared-workspace
@@ -52,19 +53,22 @@ spec:
       workspace: maven-settings
     runAfter:
     - fetch-repository
-  - name: quarkus-build-native
-    
-
-
+  - name: build-native
+    taskRef:
+      name: quarkus-native-build
+      kind: Task
+    workspaces:
+    - name: source
+      workspace: shared-workspace
     runAfter:
     - build-java
-  - name: build-image
+  - name: build-and-push-image
     taskRef:
       name: buildah
       kind: ClusterTask
     params:
     - name: DOCKERFILE
-      value: src/main/docker/Dockerfile.jvm
+      value: src/main/docker/Dockerfile.native
     - name: IMAGE
       value: $(params.IMAGE)
     workspaces:

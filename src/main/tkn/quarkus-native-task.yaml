@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: quarkus-native-build
+spec:
+  steps:
+  - name: build
+    image: registry.access.redhat.com/quarkus/mandrel-21-rhel8:21.2
+    script: |
+      #!/usr/bin/env bash
+
+      echo "Running in $(pwd)"
+      
+      [[ -f target/native-sources/native-image.args ]] || ( echo 'There are no native source available in this workspace, have you built the project with -Dquarkus.package.type=native-source?'; exit 1)
+
+      cd target/native-sources
+
+      native-image $(cat native-image.args) -J-Xmx4g
+
+      # The Dockerfile.native expects the native executable to be under target directory
+      cp *-runner ..
+
+    workingDir: $(workspaces.source.path)
+  workspaces:
+    - name: source
+      description: The workspace consiting fo the Quarkus maven project
+    
