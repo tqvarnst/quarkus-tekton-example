@@ -25,12 +25,13 @@ Git repo url of the app to build, in this example it's the same as this repo
 For this example we are going to use `quarkus-pipeline-demo`, but you can of course use something else.
 
     oc new-project $NAMESPACE
-    oc apply -f src/main/tkn/pipeline.yaml
+    oc apply -f src/main/tkn/pipeline-slim.yaml
 
 # To run the pipeline
 
-    tkn pipeline start build-and-deploy-quarkus \
-        -w name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/pipelines-1.5/01_pipeline/03_persistent_volume_claim.yaml \
+    tkn pipeline start build-and-deploy-quarkus-slim \
+        --workspace name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/pipelines-1.5/01_pipeline/03_persistent_volume_claim.yaml \
+        --workspace name=maven-settings,emptyDir="" \
         -p deployment-name=$APP_NAME \
         -p git-url=$GIT_REPO \
          -p IMAGE=image-registry.openshift-image-registry.svc:5000/$NAMESPACE/$APP_NAME \
