@@ -21,15 +21,18 @@ Git repo url of the app to build, in this example it's the same as this repo
 
     GIT_REPO=https://github.com/tqvarnst/quarkus-tekton-example
 
-# To install the pipeline
-For this example we are going to use `quarkus-pipeline-demo`, but you can of course use something else.
+# S2I Java build pipeline
 
+## To install the pipeline
+For this example we are going to use `quarkus-pipeline-demo-s2i`, but you can of course use something else.
+
+    NAMESPACE=quarkus-pipeline-demo-s2i
     oc new-project $NAMESPACE
-    oc apply -f src/main/tkn/pipeline-slim.yaml
+    oc apply -f src/main/tkn/pipeline-s2i.yaml
 
-# To run the pipeline
+## To run the pipeline
 
-    tkn pipeline start build-and-deploy-quarkus-slim \
+    tkn pipeline start build-quarkus-s2i \
         --workspace name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/pipelines-1.5/01_pipeline/03_persistent_volume_claim.yaml \
         --workspace name=maven-settings,emptyDir="" \
         -p deployment-name=$APP_NAME \
@@ -37,7 +40,32 @@ For this example we are going to use `quarkus-pipeline-demo`, but you can of cou
          -p IMAGE=image-registry.openshift-image-registry.svc:5000/$NAMESPACE/$APP_NAME \
         --use-param-defaults
 
-# To deploy the built application
+## To deploy the built application
+
+    oc new-app $APP_NAME -n $NAMESPACE
+    oc expose svc $APP_NAME -n $NAMESPACE
+
+
+# Maven and buildah Quarkus JVM pipeline
+
+## To install the pipeline
+For this example we are going to use `quarkus-pipeline-demo-java`, but you can of course use something else.
+
+    NAMESPACE=quarkus-pipeline-demo-java
+    oc new-project $NAMESPACE
+    oc apply -f src/main/tkn/pipeline-java.yaml
+
+## To run the pipeline
+
+    tkn pipeline start build-quarkus-java \
+        --workspace name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/pipelines-1.5/01_pipeline/03_persistent_volume_claim.yaml \
+        --workspace name=maven-settings,emptyDir="" \
+        -p deployment-name=$APP_NAME \
+        -p git-url=$GIT_REPO \
+         -p IMAGE=image-registry.openshift-image-registry.svc:5000/$NAMESPACE/$APP_NAME \
+        --use-param-defaults
+
+## To deploy the built application
 
     oc new-app $APP_NAME -n $NAMESPACE
     oc expose svc $APP_NAME -n $NAMESPACE

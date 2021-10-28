@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: build-and-deploy-quarkus
+  name: build-quarkus-s2i
 spec:
   workspaces:
   - name: shared-workspace
