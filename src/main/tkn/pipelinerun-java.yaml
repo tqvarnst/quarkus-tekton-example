@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: quarkus-build-java-pipelinerun-
+spec:
+  pipelineRef:
+    name: build-quarkus-java
+  params:
+  - name: git-url
+    value: https://github.com/tqvarnst/quarkus-tekton-example
+  - name: IMAGE
+    value: image-registry.openshift-image-registry.svc:5000/quarkus-pipeline-demo-java/quarkus-hello
+  workspaces:
+  - name: maven-settings
+    emptyDir: {}
+  - name: shared-workspace
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
