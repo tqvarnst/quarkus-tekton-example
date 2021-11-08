@@ -3,13 +3,14 @@ kind: PipelineRun
 metadata:
   generateName: quarkus-build-java-quay-pipelinerun-
 spec:
+  serviceAccountName: build-bot
   pipelineRef:
     name: build-quarkus-java
   params:
   - name: git-url
     value: https://github.com/tqvarnst/quarkus-tekton-example
   - name: IMAGE
-    value: quay.io/tqvarnst/quarkus-hello
+    value: quay.io/tqvarnst/quarkus-tekton-demo
   workspaces:
   - name: maven-settings
     emptyDir: {}
