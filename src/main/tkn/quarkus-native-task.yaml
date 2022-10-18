@@ -5,7 +5,7 @@ metadata:
 spec:
   steps:
   - name: build
-    image: registry.access.redhat.com/quarkus/mandrel-21-rhel8:21.2
+    image: quay.io/quarkus/ubi-quarkus-mandrel:22.2-java17
     script: |
       #!/usr/bin/env bash
 

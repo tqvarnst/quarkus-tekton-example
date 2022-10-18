@@ -81,7 +81,7 @@ For this example we are going to use `quarkus-pipeline-demo-native`, but you can
 
 ## To run the pipeline
 
-    tkn pipeline start build-quarkus-java \
+    tkn pipeline start build-quarkus-native \
         --workspace name=shared-workspace,volumeClaimTemplateFile=https://raw.githubusercontent.com/openshift/pipelines-tutorial/pipelines-1.5/01_pipeline/03_persistent_volume_claim.yaml \
         --workspace name=maven-settings,emptyDir="" \
         -p deployment-name=$APP_NAME \
