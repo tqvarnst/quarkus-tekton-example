@@ -11,7 +11,7 @@ spec:
 
       echo "Running in $(pwd)"
       
-      [[ -f target/native-sources/native-image.args ]] || ( echo 'There are no native source available in this workspace, have you built the project with -Dquarkus.package.type=native-source?'; exit 1)
+      [[ -f target/native-sources/native-image.args ]] || ( echo 'There are no native source available in this workspace, have you built the project with -Dquarkus.package.type=native-sources?'; exit 1)
 
       cd target/native-sources
 
